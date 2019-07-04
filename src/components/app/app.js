@@ -4,10 +4,13 @@ import AppHeader from "../app-header";
 import SearchPanel from "../search-panel";
 import ItemStatusFilter from "../item-status-filter";
 import TodoList from "../todo-list";
+import ItemAddForm from '../item-add-form'
 
 import './app.css';
 
 class App extends Component {
+
+    maxID = 100;
     state = {
         todoData: [
             { label: 'Drink Coffee', important: false, id: 1 },
@@ -29,6 +32,22 @@ class App extends Component {
         })
     };
 
+    addItem = (text) => {
+        const newItem = {
+            label: text,
+            important: false,
+            id: this.maxID++
+        };
+        this.setState(({todoData}) => {
+            const newArray = [
+                ...todoData, newItem
+            ];
+            return {
+                todoData: newArray
+            };
+        })
+    };
+
     render() {
         return (
             <div className="todo-app">
@@ -42,6 +61,7 @@ class App extends Component {
                     todos={this.state.todoData}
                     onDeleted={ this.deleteItem }
                 />
+                <ItemAddForm onAdded={this.addItem} />
             </div>
         );
     }
